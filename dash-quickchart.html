@@ -1,0 +1,237 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<link rel="import" href="../jquery-import-seph/jquery.html">
+<link rel="import" href="../moment-import/moment.html">
+<link rel="import" href="../bootstrap-import/bootstrap.html">
+<link rel="import" href="../bootstrap-import/bootstrap-daterangepicker.html">
+<link rel="import" href="../flot-import/flot.html">
+<link rel="import" href="../flot-import/flot-curvedlines.html">
+<link rel="import" href="../flot-import/flot-resize.html">
+<link rel="import" href="../flot-import/flot-tooltips.html">
+
+<link rel="stylesheet" type="text/css" href="umega.css">
+
+<dom-module id="dash-quickchart">
+    <template>
+        <div class="widget clear">
+            <div class="widget-heading clearfix">
+                <h3 class="widget-title pull-left">Lead Production</h3>
+                <ul class="widget-tools pull-right list-inline">
+                    <li><a href="javascript:;" class="widget-collapse"><i class="ti-angle-up"></i></a></li>
+                    <li><a href="javascript:;" class="widget-reload"><i class="ti-reload"></i></a></li>
+                    <li><a href="javascript:;" class="widget-remove"><i class="ti-close"></i></a></li>
+                </ul>
+            </div>
+            <div class="widget-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="clearfix">
+                            <div id="flot-visitor-legend" class="pull-left"></div>
+                            <div class="pull-right">
+                                <div class="btn-toolbar">
+                                    <button id="daterangepicker" type="button" class="btn btn-raised btn-black"><i class="ti-calendar"> </i><span></span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="flot-visitor" style="height: 300px"></div>
+                        <div class="row row-0 mt-10 text-center">
+                            <div class="col-xs-4">
+                                <div class="fs-30 fw-600">7.8K</div>
+                                <h5 class="m-0">Overall Leads <span class="text-danger"><i class="ti-arrow-down fs-13"></i> 2.43%</span></h5>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="fs-30 fw-600">1532</div>
+                                <h5 class="m-0">Avg. Lead Per Hour <span class="text-success"><i class="ti-arrow-up fs-13"></i> 12.54%</span></h5>
+                            </div>
+                            <div class="col-xs-4">
+                                <div class="fs-30 fw-600">28%</div>
+                                <h5 class="m-0">Conversion Rate<span class="text-success"><i class="ti-arrow-up fs-13"></i> 5.62%</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'dash-quickchart',
+
+            attached: function () {
+                this.async(function () {
+                    $(document).ready(function () {
+                        $('body').addClass('red-skin');
+
+                        // Visitor Chart
+                        // --------------------------------------------------
+
+                        var dataNewVisitor = [
+        [0, 150708],
+        [1, 502507],
+        [2, 220627],
+        [3, 821182],
+        [4, 233599],
+        [5, 4087866],
+        [6, 364625],
+        [7, 3064625],
+        [8, 236585],
+        [9, 1040222],
+        [10, 516876],
+        [11, 292003]
+    ];
+                        var dataReturningVisitor = [
+        [0, 650708],
+        [1, 1102507],
+        [2, 417012],
+        [3, 495497],
+        [4, 887603],
+        [5, 564775],
+        [6, 2580159],
+        [7, 607998],
+        [8, 1906411],
+        [9, 346237],
+        [10, 315699],
+        [11, 202003]
+    ];
+                        var xticksVisitor = [
+        [0, 'Jan'],
+        [1, 'Feb'],
+        [2, 'Mar'],
+        [3, 'Apr'],
+        [4, 'May'],
+        [5, 'Jun'],
+        [6, 'Jul'],
+        [7, 'Aug'],
+        [8, 'Sep'],
+        [9, 'Oct'],
+        [10, 'Nov'],
+        [11, 'Dec']
+    ];
+                        var datasetVisitor = [{
+                            label: 'Auto Leads',
+                            data: dataNewVisitor,
+                            color: '#e74c3c',
+                            lines: {
+                                show: true,
+                                fill: 0.9,
+                                lineWidth: 0
+                            },
+                            curvedLines: {
+                                apply: true,
+                                monotonicFit: true
+                            }
+    }, {
+                            data: dataNewVisitor,
+                            color: '#e74c3c',
+                            lines: {
+                                show: true,
+                                lineWidth: 0
+                            }
+    }, {
+                            label: 'Email Leads',
+                            data: dataReturningVisitor,
+                            color: '#34495e',
+                            lines: {
+                                show: true,
+                                fill: 0.9,
+                                lineWidth: 0
+                            },
+                            curvedLines: {
+                                apply: true,
+                                monotonicFit: true
+                            }
+    }, {
+                            data: dataReturningVisitor,
+                            color: '#34495e',
+                            lines: {
+                                show: true,
+                                lineWidth: 0
+                            }
+    }];
+                        var optionsVisitor = {
+                            series: {
+                                curvedLines: {
+                                    active: true
+                                },
+                                shadowSize: 0
+                            },
+                            grid: {
+                                borderWidth: 0,
+                                hoverable: true,
+                                labelMargin: 15
+                            },
+                            xaxis: {
+                                ticks: xticksVisitor,
+                                tickLength: 0,
+                                font: {
+                                    color: '#9a9a9a',
+                                    size: 11
+                                }
+                            },
+                            yaxis: {
+                                tickLength: 0,
+                                tickSize: 1000000,
+                                font: {
+                                    color: '#9a9a9a',
+                                    size: 11
+                                },
+                                tickFormatter: function (val, axis) {
+                                    if (val > 0) {
+                                        return (val / 1000000).toFixed(axis.tickDecimals) + ' M';
+                                    } else {
+                                        return (val / 1000000).toFixed(axis.tickDecimals);
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                show: false
+                            },
+                            legend: {
+                                show: true,
+                                container: $('#flot-visitor-legend'),
+                                noColumns: 4,
+                                labelBoxBorderColor: '#FFF',
+                                margin: 0
+                            }
+                        };
+                        $.plot($('#flot-visitor'), datasetVisitor, optionsVisitor);
+                        $('#flot-visitor').bind('plothover', function (event, pos, item) {
+                            if (item) {
+                                $('.flotTip').text(item.datapoint[1].toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' visitors').css({
+                                    top: item.pageY + 15,
+                                    left: item.pageX + 10
+                                }).show();
+                            } else {
+                                $('.flotTip').hide();
+                            }
+                        });
+
+                        // Bootstrap Date Range Picker
+                        // --------------------------------------------------
+
+                        $('#daterangepicker').daterangepicker({
+                            ranges: {
+                                'Today': [moment(), moment()],
+                                'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                                'Last 7 Days': [moment().subtract('days', 6), moment()],
+                                'Last 30 Days': [moment().subtract('days', 29), moment()],
+                                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                            },
+                            opens: 'left',
+                            startDate: moment().subtract(29, 'days'),
+                            endDate: moment(),
+                            applyClass: 'btn-raised btn-black',
+                            cancelClass: 'btn-raised btn-default'
+                        }, function (start, end, label) {
+                            $('#daterangepicker span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                        });
+                        $('#daterangepicker span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+                    });
+                });
+            }
+        })
+    </script>
+</dom-module>
