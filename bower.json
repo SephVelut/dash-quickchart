@@ -19,6 +19,7 @@
     "jquery-import-seph": "*",
     "bootstrap-import": "*",
     "flot-import": "*",
-    "moment-import": "^1.0.1"
+    "moment-import-seph": "*",
+    "themify-import": "*"
   }
 }
