@@ -25,7 +25,7 @@
             </div>
             <div class="widget-body">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="clearfix">
                             <div id="flot-visitor-legend" class="pull-left"></div>
                             <div class="pull-right">
@@ -59,7 +59,7 @@
                 title: {
                     type: String
                 },
-                
+
                 xaxis: {
                     type: Array
                 },
@@ -75,7 +75,7 @@
                 totals: {
                     type: Array
                 },
-                
+
                 _totalsLength: {
                     type: String,
                     computed: 'computeTotalsLength(totals)'
@@ -91,7 +91,7 @@
                     computed: 'computeOptions(xaxis, yaxis)'
                 }
             },
-            
+
             computePercentArrow: function(percent) {
                 if(percent.substring(0,1) == "-") {
                     return 'ti-arrow-down';
@@ -99,7 +99,7 @@
                     return 'ti-arrow-up'
                 }
             },
-            
+
             computePercent: function (percent) {
                 if(percent.substring(0, 1) == "-") {
                     return percent.substring(1, percent.length);
@@ -107,7 +107,7 @@
                     return percent;
                 }
             },
-            
+
             computePercentColor: function(percent) {
                 if(percent.substring(0,1) == "-") {
                     return 'text-danger';
